@@ -5,86 +5,94 @@
     <title>Capacitación Liquibase</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             margin: 0;
-            padding: 20px;
-            background: #1a1a2e;
+            padding: 40px 20px;
             text-align: center;
+            min-height: 100vh;
         }
         .container {
-            max-width: 1000px;
+            max-width: 800px;
             margin: 0 auto;
+        }
+        h1 {
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .subtitle {
+            color: #aaa;
+            margin-bottom: 50px;
+            font-size: 1.2em;
+        }
+        .card {
             background: white;
-            border-radius: 10px;
-            padding: 20px;
+            border-radius: 16px;
+            padding: 30px;
+            margin: 20px 0;
+            text-align: left;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            color: #333;
         }
-        img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.3);
         }
-        button {
-            padding: 10px 20px;
-            margin: 10px;
+        .card h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.8em;
+        }
+        .card p {
+            margin: 0;
+            color: #666;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        .badge-blue {
             background: #0073aa;
             color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
         }
-        button:hover {
-            background: #005a87;
+        .badge-yellow {
+            background: #ffc107;
+            color: #333;
         }
-        .counter {
-            margin-top: 15px;
-            color: #555;
+        .footer {
+            margin-top: 50px;
+            color: #666;
+            font-size: 12px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>📖 Capacitación Liquibase - CI/CD & Best Practices</h2>
+        <h1>📖 Capacitación Liquibase</h1>
+        <div class="subtitle">Control de versiones para bases de datos</div>
         
-        <img id="slide" src="Slide1.jpg" alt="Slide">
+        <a href="fundamentos.html" class="card">
+            <h2>🎯 Lección 1: Liquibase - Fundamentos</h2>
+            <p>Slides 1 al 40 - Conceptos básicos, arquitectura, comandos esenciales</p>
+            <span class="badge badge-blue">Slides 1-40</span>
+        </a>
         
-        <div>
-            <button onclick="prevSlide()">◀ Anterior</button>
-            <button onclick="nextSlide()">Siguiente ▶</button>
-        </div>
+        <a href="best-practices.html" class="card">
+            <h2>⭐ Lección 2: Liquibase - Best Practices</h2>
+            <p>Slides 41 al 50 - Mejores prácticas, CI/CD, estrategias de rollback</p>
+            <span class="badge badge-yellow">Slides 41-50</span>
+        </a>
         
-        <div class="counter">
-            Slide <span id="current">1</span> de <span id="total">50</span>
+        <div class="footer">
+            Navegación con teclado: ← → | Primer slide: Inicio | Último slide: Fin
         </div>
     </div>
-
-    <script>
-        let current = 1;
-        const total = 50;
-        
-        function updateSlide() {
-            document.getElementById('slide').src = `Slide${current}.jpg`;
-            document.getElementById('current').innerText = current;
-        }
-        
-        function nextSlide() {
-            if (current < total) {
-                current++;
-                updateSlide();
-            }
-        }
-        
-        function prevSlide() {
-            if (current > 1) {
-                current--;
-                updateSlide();
-            }
-        }
-        
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'ArrowRight') nextSlide();
-            if (e.key === 'ArrowLeft') prevSlide();
-        });
-    </script>
 </body>
 </html>

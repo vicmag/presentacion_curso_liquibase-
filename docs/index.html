@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Capacitación Liquibase</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #1a1a2e;
+            text-align: center;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            background: #0073aa;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #005a87;
+        }
+        .counter {
+            margin-top: 15px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>📖 Capacitación Liquibase - CI/CD & Best Practices</h2>
+        
+        <img id="slide" src="Slide1.jpg" alt="Slide">
+        
+        <div>
+            <button onclick="prevSlide()">◀ Anterior</button>
+            <button onclick="nextSlide()">Siguiente ▶</button>
+        </div>
+        
+        <div class="counter">
+            Slide <span id="current">1</span> de <span id="total">50</span>
+        </div>
+    </div>
+
+    <script>
+        let current = 1;
+        const total = 50;
+        
+        function updateSlide() {
+            document.getElementById('slide').src = `Slide${current}.jpg`;
+            document.getElementById('current').innerText = current;
+        }
+        
+        function nextSlide() {
+            if (current < total) {
+                current++;
+                updateSlide();
+            }
+        }
+        
+        function prevSlide() {
+            if (current > 1) {
+                current--;
+                updateSlide();
+            }
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+    </script>
+</body>
+</html>

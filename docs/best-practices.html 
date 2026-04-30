@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Liquibase - Best Practices (Slides 41-50)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #1a1a2e;
+            text-align: center;
+        }
+        .presentation-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            padding: 20px;
+        }
+        h2 { color: #ffc107; margin-bottom: 20px; }
+        .badge {
+            display: inline-block;
+            background: #ffc107;
+            color: #333;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .slide-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-controls {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .nav-controls button {
+            padding: 10px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            background: #ffc107;
+            color: #333;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .nav-controls button:hover { background: #e0a800; }
+        .counter { font-size: 14px; color: #555; margin-top: 15px; }
+        .thumbnail-bar {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+        .thumbnail {
+            width: 60px;
+            height: 45px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .thumbnail:hover { transform: scale(1.05); border-color: #ffc107; }
+        .thumbnail.active { border-color: #ffc107; box-shadow: 0 0 5px rgba(255,193,7,0.5); }
+        .goto-section {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .goto-input {
+            width: 70px;
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .range-info {
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        @media (max-width: 600px) {
+            .thumbnail { width: 40px; height: 30px; }
+            .nav-controls button { padding: 8px 16px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <h2>📖 Liquibase - Best Practices</h2>
+        <div class="badge">⭐ Sesión 2: Slides 41 al 50</div>
+        <div class="range-info">📍 Navegación: Slide <span id="slideCounter">1</span> de 10</div>
+        
+        <img id="mainSlide" class="slide-image" src="Slide41.jpg" alt="Slide">
+        
+        <div class="nav-controls">
+            <button onclick="firstSlide()">⏮ Primero</button>
+            <button onclick="prevSlide()">◀ Anterior</button>
+            <button onclick="nextSlide()">Siguiente ▶</button>
+            <button onclick="lastSlide()">Último ⏭</button>
+        </div>
+        
+        <div class="goto-section">
+            <span>Ir al slide:</span>
+            <input type="number" id="gotoInput" class="goto-input" min="1" max="10" value="1">
+            <button onclick="gotoSlide()">Ir</button>
+        </div>
+        
+        <div id="thumbnailBar" class="thumbnail-bar"></div>
+    </div>
+
+    <script>
+        const START_SLIDE = 41;
+        const END_SLIDE = 50;
+        const TOTAL_SLIDES = END_SLIDE - START_SLIDE + 1;
+        let currentSlide = 1;
+        
+        function getActualSlideNumber(displayNumber) {
+            return START_SLIDE + displayNumber - 1;
+        }
+        
+        function getImageUrl(displayNumber) {
+            return `Slide${getActualSlideNumber(displayNumber)}.jpg`;
+        }
+        
+        function updateSlide() {
+            document.getElementById('mainSlide').src = getImageUrl(currentSlide);
+            document.getElementById('slideCounter').innerText = currentSlide;
+            updateActiveThumbnail();
+        }
+        
+        function nextSlide() { if (currentSlide < TOTAL_SLIDES) { currentSlide++; updateSlide(); } }
+        function prevSlide() { if (currentSlide > 1) { currentSlide--; updateSlide(); } }
+        function firstSlide() { currentSlide = 1; updateSlide(); }
+        function lastSlide() { currentSlide = TOTAL_SLIDES; updateSlide(); }
+        
+        function gotoSlide() {
+            let num = parseInt(document.getElementById('gotoInput').value);
+            if (num >= 1 && num <= TOTAL_SLIDES) {
+                currentSlide = num;
+                updateSlide();
+                document.getElementById('gotoInput').value = num;
+            }
+        }
+        
+        function goToSlide(num) { currentSlide = num; updateSlide(); }
+        
+        function updateActiveThumbnail() {
+            const thumbs = document.querySelectorAll('.thumbnail');
+            thumbs.forEach((thumb, idx) => {
+                if (idx + 1 === currentSlide) thumb.classList.add('active');
+                else thumb.classList.remove('active');
+            });
+        }
+        
+        function generateThumbnails() {
+            const container = document.getElementById('thumbnailBar');
+            container.innerHTML = '';
+            for (let i = 1; i <= TOTAL_SLIDES; i++) {
+                const img = document.createElement('img');
+                img.src = getImageUrl(i);
+                img.classList.add('thumbnail');
+                img.title = `Slide ${getActualSlideNumber(i)}`;
+                img.onclick = (function(slideNum) { return function() { goToSlide(slideNum); }; })(i);
+                container.appendChild(img);
+            }
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+            if (e.key === 'Home') firstSlide();
+            if (e.key === 'End') lastSlide();
+        });
+        
+        document.getElementById('gotoInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') gotoSlide();
+        });
+        
+        generateThumbnails();
+        updateSlide();
+        document.getElementById('gotoInput').max = TOTAL_SLIDES;
+    </script>
+</body>
+</html>
